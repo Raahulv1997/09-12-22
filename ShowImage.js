@@ -50,8 +50,8 @@ export const ShowImage = () => {
 
 
 
-
-
+    const  willDelete=(id)=>{
+      
     swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this imaginary file!",
@@ -61,16 +61,35 @@ export const ShowImage = () => {
     })
     .then((willDelete) => {
       if (willDelete) {
-        swal("Poof! Your imaginary file has been deleted!", {
-          icon: "success",
 
-        });
-      } else {
-        swal("Your imaginary file is safe!");
-      }
+        axios.delete(`http://localhost:1000/upload/${id}`).than((response)=>{
+          fethImage();
+          swal(`Poof!   Your imaginary file has been deleted! ${id} `,
+          {
+            icon: "success",
+            
+  
+          });
+        }).catch(()=>{
+          swal("Your imaginary file is safe!");
+        })
+
+      
+      } 
     });
+    }
 
 
+    // const deleteImage=async(id)=>{
+      
+    //   const result= await axios.delete(`http://localhost:1000/upload/${id}`)
+    //   if(result.status===204){
+    //   fethImage();
+    //   }
+    //   else{
+    //     alert("not delete")
+    //   }
+    // }
 
 
   return (
@@ -127,7 +146,8 @@ export const ShowImage = () => {
           <td>{id+1}</td>
           <td>{item.name}</td>
           <td><img src={`http://localhost:1000/${image} `} alt={item.filename} width={150} height={100} /></td >
-          <td><div> <Button onClick={()=>{willDelete()}}> Delete</Button> </div></td>
+          {/* <td><div> <Button onClick={()=>{deleteImage(item._id)}}> Delete</Button> </div></td> */}
+          <td><div> <Button onClick={()=>{willDelete(item._id)}}> Delete</Button> </div></td>
        
         </tr>
           </>
